@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { getTrendingStocks } from "@/lib/stocks-api"
+import { Stock } from "@/lib/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ArrowUp, ArrowDown, Clock } from "lucide-react"
@@ -48,7 +49,7 @@ export function TopStocksTable() {
                             </tr>
                         </thead>
                         <tbody>
-                            {stocks.map((stock: any, index: number) => {
+                            {stocks.map((stock: Stock, index: number) => {
                                 const price = stock.regularMarketPrice || 0
                                 const changePercent = stock.regularMarketChangePercent || 0
                                 const isPositive = changePercent >= 0

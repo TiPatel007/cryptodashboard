@@ -66,11 +66,11 @@ export const getStockHistory = async (symbol: string, range: string) => {
         });
 
         // Yahoo Finance returns: { quotes: [{ date, close, high, low, open }] }
-        const quotes = data.quotes || [];
+        const quotes: { date: string; close: number | null }[] = data.quotes || [];
 
         const prices: [number, number][] = quotes
-            .map((q: any) => [new Date(q.date).getTime(), q.close])
-            .filter(([, price]: [number, number]) => price !== null && price !== undefined);
+            .filter((q) => q.close !== null && q.close !== undefined)
+            .map((q) => [new Date(q.date).getTime(), q.close as number]);
 
         return { prices };
 

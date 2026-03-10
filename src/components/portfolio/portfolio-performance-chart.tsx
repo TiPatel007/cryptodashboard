@@ -14,6 +14,29 @@ import {
 import { cn } from "@/lib/utils"
 import { ArrowUp, ArrowDown, TrendingUp } from "lucide-react"
 
+interface TooltipProps {
+    active?: boolean
+    payload?: ReadonlyArray<{ payload: PortfolioDataPoint }>
+    selectedTimeframe: Timeframe
+}
+
+function CustomTooltip({ active, payload, selectedTimeframe }: TooltipProps) {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload
+        return (
+            <div className="bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-lg p-3 shadow-xl">
+                <p className="text-xs text-slate-400 mb-1">
+                    {formatChartDate(data.timestamp, selectedTimeframe)}
+                </p>
+                <p className="text-lg font-bold text-white">
+                    ${data.value.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                </p>
+            </div>
+        )
+    }
+    return null
+}
+
 interface PortfolioPerformanceChartProps {
     transactions: Transaction[]
     initialBalance: number
@@ -49,24 +72,6 @@ export function PortfolioPerformanceChart({
     // Calculate performance metrics
     const metrics = calculatePerformanceMetrics(chartData)
     const isPositive = metrics.change >= 0
-
-    // Custom tooltip
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload as PortfolioDataPoint
-            return (
-                <div className="bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-lg p-3 shadow-xl">
-                    <p className="text-xs text-slate-400 mb-1">
-                        {formatChartDate(data.timestamp, selectedTimeframe)}
-                    </p>
-                    <p className="text-lg font-bold text-white">
-                        ${data.value.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                    </p>
-                </div>
-            )
-        }
-        return null
-    }
 
     return (
         <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
@@ -162,7 +167,7 @@ export function PortfolioPerformanceChart({
                                 axisLine={false}
                                 width={60}
                             />
-                            <Tooltip content={<CustomTooltip />} />
+                            <Tooltip content={(props) => <CustomTooltip {...props} selectedTimeframe={selectedTimeframe} />} />
                             <Area
                                 type="monotone"
                                 dataKey="value"
