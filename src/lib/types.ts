@@ -86,6 +86,13 @@ export interface Stock {
     fiftyTwoWeekLow: number
     exchange: string
     quoteType: string
+    postMarketPrice?: number
+    marketState?: string
+    averageVolume?: number
+    trailingPE?: number
+    dividendYield?: number
+    epsTrailingTwelveMonths?: number
+    beta?: number
 }
 
 export type AssetType = "crypto" | "stock"

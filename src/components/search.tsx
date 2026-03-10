@@ -21,6 +21,13 @@ import {
 import { AssetType, Stock } from "@/lib/types"
 import { Bitcoin, TrendingUp } from "lucide-react"
 
+interface CoinSearchResult {
+    id: string
+    name: string
+    symbol: string
+    thumb?: string
+}
+
 export function Search() {
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
@@ -128,10 +135,10 @@ export function Search() {
 
                     {coinResults && coinResults.length > 0 && (
                         <CommandGroup heading="Crypto">
-                            {coinResults
-                                .filter((coin: any) => !coin.name.toLowerCase().includes("tokenized stock") && !coin.name.toLowerCase().includes("xstock"))
+                            {(coinResults as CoinSearchResult[])
+                                .filter((coin) => !coin.name.toLowerCase().includes("tokenized stock") && !coin.name.toLowerCase().includes("xstock"))
                                 .slice(0, 5)
-                                .map((coin: any) => (
+                                .map((coin) => (
                                     <CommandItem
                                         key={coin.id}
                                         value={coin.name}

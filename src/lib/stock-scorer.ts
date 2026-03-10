@@ -15,11 +15,25 @@ export interface StockScore {
     dividendYield?: number
 }
 
+export interface StockQuoteInput {
+    symbol: string
+    shortName?: string
+    regularMarketPrice?: number
+    regularMarketChangePercent?: number
+    regularMarketVolume?: number
+    averageVolume?: number
+    marketCap?: number
+    trailingPE?: number
+    dividendYield?: number
+    epsTrailingTwelveMonths?: number
+    beta?: number
+}
+
 /**
  * Score a stock based on technical and fundamental analysis
  */
 export function scoreStock(
-    quote: any,
+    quote: StockQuoteInput,
     rsi: number,
     sma50: number,
     sma200: number
@@ -86,7 +100,7 @@ export function scoreStock(
     // FUNDAMENTAL SCORING (50 points max)
 
     // 1. P/E Ratio (15 points)
-    const pe = (quote as any).trailingPE
+    const pe = quote.trailingPE
     if (pe) {
         if (pe >= 10 && pe <= 20) {
             fundamentalScore += 15
@@ -101,7 +115,7 @@ export function scoreStock(
     }
 
     // 2. Dividend Yield (10 points)
-    const dividendYield = (quote as any).dividendYield
+    const dividendYield = quote.dividendYield
     if (dividendYield) {
         if (dividendYield > 3) {
             fundamentalScore += 10
@@ -131,7 +145,7 @@ export function scoreStock(
     }
 
     // 4. EPS (10 points)
-    const eps = (quote as any).epsTrailingTwelveMonths
+    const eps = quote.epsTrailingTwelveMonths
     if (eps && eps > 0) {
         fundamentalScore += 10
         reasons.push("Profitable (positive EPS)")
@@ -140,8 +154,8 @@ export function scoreStock(
     }
 
     // 5. Beta (5 points)
-    const beta = (quote as any).beta
-    if (beta >= 0.8 && beta <= 1.2) {
+    const beta = quote.beta
+    if (beta !== undefined && beta >= 0.8 && beta <= 1.2) {
         fundamentalScore += 5
         reasons.push("Moderate risk (stable beta)")
     } else if (beta) {

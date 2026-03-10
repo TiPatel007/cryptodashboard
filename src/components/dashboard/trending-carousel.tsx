@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { getTrendingStocks } from "@/lib/stocks-api"
+import { Stock } from "@/lib/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Flame, ArrowUp, ArrowDown } from "lucide-react"
@@ -36,7 +37,7 @@ export function TrendingCarousel() {
             </div>
             <ScrollArea className="w-full whitespace-nowrap rounded-xl">
                 <div className="flex w-max space-x-4 p-1">
-                    {trending?.slice(0, 8).map((stock: any) => {
+                    {trending?.slice(0, 8).map((stock: Stock) => {
                         const changePercent = stock.regularMarketChangePercent || 0
                         const isPositive = changePercent >= 0
                         const price = stock.regularMarketPrice || 0

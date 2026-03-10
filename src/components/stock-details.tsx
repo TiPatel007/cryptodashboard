@@ -35,19 +35,19 @@ export function StockDetails({ symbol }: { symbol: string }) {
         if (!history?.prices || history.prices.length === 0) return 50
         const prices = history.prices.map((p: [number, number]) => p[1])
         return calculateRSI(prices)
-    }, [history?.prices])
+    }, [history])
 
     const sma50 = useMemo(() => {
         if (!history?.prices || history.prices.length === 0) return 0
         const prices = history.prices.map((p: [number, number]) => p[1])
         return calculateSMA(prices, 50) || 0
-    }, [history?.prices])
+    }, [history])
 
     const sma200 = useMemo(() => {
         if (!history?.prices || history.prices.length === 0) return 0
         const prices = history.prices.map((p: [number, number]) => p[1])
         return calculateSMA(prices, 200) || 0
-    }, [history?.prices])
+    }, [history])
 
     if (loadingStock) {
         return <div className="space-y-6">
@@ -257,7 +257,7 @@ export function StockDetails({ symbol }: { symbol: string }) {
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                             <span className="text-sm text-zinc-300">P/E Ratio</span>
                             <span className="text-white font-semibold">
-                                {(stock as any).trailingPE ? (stock as any).trailingPE.toFixed(2) : 'N/A'}
+                                {stock.trailingPE ? stock.trailingPE.toFixed(2) : 'N/A'}
                             </span>
                         </div>
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
@@ -269,19 +269,19 @@ export function StockDetails({ symbol }: { symbol: string }) {
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                             <span className="text-sm text-zinc-300">Dividend Yield</span>
                             <span className="text-white font-semibold">
-                                {(stock as any).dividendYield ? `${(stock as any).dividendYield.toFixed(2)}%` : 'N/A'}
+                                {stock.dividendYield ? `${stock.dividendYield.toFixed(2)}%` : 'N/A'}
                             </span>
                         </div>
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                             <span className="text-sm text-zinc-300">EPS</span>
                             <span className="text-white font-semibold">
-                                {(stock as any).epsTrailingTwelveMonths ? formatCurrency((stock as any).epsTrailingTwelveMonths, symbol) : 'N/A'}
+                                {stock.epsTrailingTwelveMonths ? formatCurrency(stock.epsTrailingTwelveMonths, symbol) : 'N/A'}
                             </span>
                         </div>
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                             <span className="text-sm text-zinc-300">Beta</span>
                             <span className="text-white font-semibold">
-                                {(stock as any).beta ? (stock as any).beta.toFixed(2) : 'N/A'}
+                                {stock.beta ? stock.beta.toFixed(2) : 'N/A'}
                             </span>
                         </div>
                     </CardContent>
